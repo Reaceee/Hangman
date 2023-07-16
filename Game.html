@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Save Bob</title>
+</head>
+
+<body>
+    <div class="body">
+        <div class="scene">
+            <img src="hap.png" alt="" draggable="false">
+            <img src="table.png" class="table" alt="" draggable="false">
+        </div>
+        <div class="score">Score: 0</div>
+        <div class="game">
+            <div class="guesses">
+                <div class="box"></div>
+                <div class="box"></div>
+                <div class="box"></div>
+                <div class="box"></div>
+            </div>
+            <div class="hintpad">
+                <div class="hint-tit">HINT:</div>
+                <div class="hint">Hint will be written here.</div>
+            </div>
+
+            <div class="wordpad">
+                <div class="letter">A</div>
+                <div class="letter">P</div>
+                <div class="letter">P</div>
+                <div class="letter">L</div>
+                <div class="letter">E</div>
+
+            </div>
+            <div class="foot">
+                <select id="selection" onchange="showbtn()">
+                    <option value="A" id="a">A</option>
+                    <option value="B" id="b">B</option>
+                    <option value="C" id="c">C</option>
+                    <option value="D" id="d">D</option>
+                    <option value="E" id="e">E</option>
+                    <option value="F" id="f">F</option>
+                    <option value="G" id="g">G</option>
+                    <option value="H" id="h">H</option>
+                    <option value="I" id="i">I</option>
+                    <option value="J" id="j">J</option>
+                    <option value="K" id="k">K</option>
+                    <option value="L" id="l">L</option>
+                    <option value="M" id="m">M</option>
+                    <option value="N" id="n">N</option>
+                    <option value="O" id="o">O</option>
+                    <option value="P" id="p">P</option>
+                    <option value="Q" id="q">Q</option>
+                    <option value="R" id="r">R</option>
+                    <option value="S" id="s">S</option>
+                    <option value="T" id="t">T</option>
+                    <option value="U" id="u">U</option>
+                    <option value="V" id="v">V</option>
+                    <option value="W" id="w">W</option>
+                    <option value="X" id="x">X</option>
+                    <option value="Y" id="y">Y</option>
+                    <option value="Z" id="z">Z</option>
+                </select>
+
+                <button class="guess" onclick="check(); react(); x(); checkwin(); hidebtn()" onmouseover="susp()"
+                    onmouseleave="back()" >GUESS</button>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <div class="failed">
+        <span>COULDN'T RESCUE BOB LOL, HE DIED</span>
+        <div class="opts">
+            <button onclick="refresh('cut.png'); resetscore()">RETRY</button>
+            <button onclick="quit()">QUIT GAME</button>
+        </div>
+    </div>
+
+</body>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: montserrat;
+        cursor: default;
+    }
+
+    .failed {
+        width: 100%;
+        height: 100vh;
+        position: absolute;
+        z-index: 999;
+        top: 0;
+        left: 0;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 20px;
+        display: none;
+    }
+
+    .failed::before {
+        content: '';
+        width: 100%;
+        height: 100vh;
+        opacity: 60%;
+        position: fixed;
+        top: 0;
+        z-index: -1;
+        background: rgba(0, 0, 0, 0.876);
+        /* box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); */
+        backdrop-filter: blur(16.7px);
+        -webkit-backdrop-filter: blur(16.7px);
+    }
+
+    .failed span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+        font-size: 2rem;
+        background-color: rgba(255, 0, 0, 0.168);
+        letter-spacing: 3px;
+
+        font-weight: 900;
+    }
+
+    .failed .opts {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .failed button {
+        max-width: 200px;
+        min-width: 120px;
+        width: 50%;
+        font-size: 20px;
+        cursor: pointer;
+        height: 50px;
+
+    }
+
+    *::selection {
+        background: none;
+    }
+
+    .body {
+        width: 100%;
+        display: flex;
+        min-height: 100vh;
+
+    }
+
+    .scene {
+        width: 35%;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-image: linear-gradient(#748aa8, #9cb4d6);
+        overflow: hidden;
+    }
+
+    .scene img:nth-child(1) {
+        width: 210px;
+        height: 350px;
+        animation: none;
+        margin-top: 0;
+        transition: ease-out .9s;
+        z-index: 2;
+
+
+    }
+    .scene img:nth-child(2) {
+        width: auto;
+        height: 350px;
+        animation: none;
+        margin-top: -30px;
+        transition: ease-out .9s;
+
+
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+
+
+    }
+
+    .score {
+        padding: 10px 15px;
+        border-radius: 0 0 20px 0;
+        color: #1ac31d;
+        border: none;
+        font-size: 20px;
+        font-weight: 800;
+        position: absolute;
+        cursor: default;
+        top: 0;
+        left: 0;
+        background: #fff;
+        box-shadow: rgba(0, 0, 0, 0.508) 4px 3px 6px;
+    }
+
+    .game {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 65%;
+        gap: 20px;
+        height: 100vh;
+        background-color: #ffc680;
+    }
+
+    .guesses,
+    .hintpad {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .hintpad {
+        flex-direction: column;
+        align-items: start;
+        width: 80%;
+        background-color: #d09a5764;
+        padding: 10px 6px;
+        gap: 10px;
+        border-radius: 7px;
+    }
+
+    .guesses {
+        margin-top: 20px;
+        background-color: #d09a57;
+        border-radius: 7px;
+        width: 80%;
+        padding: 10px 0;
+        gap: 10px;
+    }
+
+    .guesses .box {
+        width: 50px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        border-radius: 7px;
+        background: #fff;
+        color: red;
+        font-size: 30px;
+        font-weight: 800;
+    }
+
+    .hint-tit {
+        color: black;
+        font-weight: 800;
+        align-self: start;
+    }
+
+    .wordpad {
+        display: flex;
+        padding: 10px;
+        justify-content: center;
+        max-width: 100%;
+        border-radius: 10px;
+        gap: 4px;
+    }
+
+
+    /* .letter:nth-child(1) {
+        border-radius: 7px 0 0 7px;
+    }
+
+    .letter:last-child {
+        border-radius: 0 7px 7px 0;
+    } */
+
+    .letter {
+        width: 50px;
+        height: 60px;
+        background-color: #d09a57;
+        border-bottom: 2px solid #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        color: #fff;
+        opacity: 1;
+    }
+
+    .space {
+        width: 50px;
+        height: 60px;
+        background: none;
+        border: none;
+        /* border: 2px solid #fff; */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        color: #fff;
+        opacity: 0;
+    }
+
+    .foot {
+        margin-top: 50px;
+        display: flex;
+    }
+
+    .foot select {
+        width: 40px;
+        background: #d09a57;
+        color: #fff;
+        outline: none;
+        border: none;
+        height: 35px;
+        padding-left: 5px;
+        cursor: pointer;
+    }
+
+    .foot button {
+        min-width: 100px;
+        background: #ffbd6b;
+        color: #fff;
+        outline: none;
+        border: 2px solid #fff;
+        height: 35px;
+        padding: 5px;
+        cursor: pointer;
+        font-weight: 800;
+
+    }
+
+    ::-webkit-scrollbar,
+    ::-webkit-scrollbar-corner {
+        background: none;
+        width: 5px;
+        height: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #ffefdc;
+    }
+
+    select::selection {
+        background-color: #fff;
+    }
+</style>
+
+
+<script>
+    var score = 0
+    var scoretxt = document.querySelector('.score')
+    scoretxt.textContent = 'Score: ' + score
+    var alphabets = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    var hint_display = document.querySelector('.hint')
+    var wordpad = document.querySelector('.wordpad')
+    var table = document.querySelector('.table')
+    var words = [
+        'Apple|Sweet and Tempting',
+        'Programmer|I am the God of the Internet',
+        "Air Conditioner|It's a little hot in here",
+        'iPhone|Hey Siri',
+        "Lantern|You Can't be afraid of the dark. I'm with you.",
+        "Onion|Chop me in pieces and Mourn my Death",
+        'Instrument|Use me to please the ears of everyone',
+        'Charger|Without me, Phones are Useless. Without phones, I am Useless.',
+        "Money|Save me for later",
+        'Football|A Job to some, A game to others',
+        'Death|Fear Me or Not. I will get to you!',
+        "friendship|I mostly come after you talk to a stranger",
+        "animation|I make any imagination comes to life.",
+        "Women|To misogynists, We are substitutes for punching bags",
+        "Geography|You don't need to go anywhere, I'll teach you about the world in one place",
+        "Realist|The world can't go the way you want it to",
+        "focus|ATTENTION!",
+        "Flinch|BOO!",
+        "mini militia|Doodle and mighty",
+        "call of duty|Famous Video game",
+        "among us|Famous Video game",
+        "minecraft|Famous Video game",
+        "Headphone|Put me on and I'll please you THROUGH YOUR EARS",
+        "Height|What goes up don't always come down",
+        "Television|Just look at me and watch stress leave",
+        "grand theft auto|Famous Video game",
+        "too good to be true|A famous phrase",
+        "triangle|What does an Icecream cone and a Pyramid have in common?",
+        "Family guy|Famous american TV show",
+        "american dad|Famous american TV show",
+        "Tom and jerry|Famous TV show",
+        "tiktok|Popular social media",
+        "tinder|Popular app",
+        "spotify|Popular app",
+        "Cartoon network|Famous TV channel",
+        "nickelodeon|Famous TV channel",
+        "cbeebies|Famous TV channel",
+        "twitter|Popular social media",
+        "linkedin|Popular social media",
+        "time|I am every moment",
+        "screen|We are both starring at each other right now.",
+        "facebook|Popular social media",
+        "roller coaster|Hop on me so I'll scare the heck out of you",
+        "abraham lincoln|Well-known american president",
+        "minute|Could be small, could be a unit",
+        "sticky note|I'll stick around just to remind you.",
+        "century|one hundred unit",
+        "hololgram|I am of three dimensions. You can see me, but can't touch me ",
+        "fire|I'm so helpful, I'll help you survive and So dangerous I can take your life",
+        "Water|It's simple. Everyone knows me.",
+        "Dwayne Johnson|Famous American movie star",
+        "Justin bieber|Famous American singer",
+        "Ariana Grande|Famous American singer",
+        "Funke Akindele|Famous Nigerian actress",
+        "Davido|Famous Nigerian musician",
+        "Young John|Famous Nigerian musician",
+        "twenty one savage|Famous American rapper",
+        "twenty one pilots|Popular Music Band",
+        "one direction|Popular Music Band",
+        "carlifonia|American state",
+        "alaska|American state",
+        "Bing|Popular search engine",
+        "google|Popular search engine",
+        "cocomelon|kids cartoon",
+        "mickey mouse club house|famous kids cartoon",
+        "cocomelon|famous kids cartoon",
+        "subway surfers|Famous mobile game",
+        "temple run|Famous mobile game",
+        "candy crush|Famous mobile game",
+    ]
+    var randNum = Math.floor(Math.random() * words.length)
+    var hint = words[randNum].substring(words[randNum].indexOf('|') + 1);
+    var word = (words[randNum].substring(0, words[randNum].indexOf('|'))).toUpperCase();
+    hint_display.textContent = hint
+    wordpad.innerHTML = null
+    var target_length = 0
+    while (target_length < word.length) {
+        var newletter = document.createElement('div')
+        newletter.id = word[target_length]
+        newletter.classList = 'letter'
+        wordpad.appendChild(newletter)
+        if (newletter.id == ' ') {
+            newletter.classList = 'space'
+        }
+        target_length++
+
+    }
+    function resetscore() {
+        score = 0
+        scoretxt.textContent = 'Score: ' + score
+
+    }
+
+
+    function refresh(cost) {
+        failed.style.display = 'none'
+        table.style.display = 'block'
+        hangman.src = cost
+        randNum = Math.floor(Math.random() * words.length)
+        hint = words[randNum].substring(words[randNum].indexOf('|') + 1);
+        word = (words[randNum].substring(0, words[randNum].indexOf('|'))).toUpperCase();
+        hint_display.textContent = hint
+        wordpad.innerHTML = null
+        target_length = 0
+        hangman.style.animation = 'none'
+        hangman.style.opacity = '1'
+        hangman.style.marginTop = '0'
+        while (target_length < word.length) {
+            var newletter = document.createElement('div')
+            newletter.id = word[target_length]
+            newletter.classList = 'letter'
+            wordpad.appendChild(newletter)
+            if (newletter.id == ' ') {
+                newletter.classList = 'space'
+            }
+            target_length++
+
+        }
+        for (var cb = 0; cb < 4; cb++) {
+            boxlist[cb].textContent = ''
+            curbox = 0
+        }
+
+        selected.innerHTML = `
+                    <option value="A" id="a">A</option>
+                    <option value="B" id="b">B</option>
+                    <option value="C" id="c">C</option>
+                    <option value="D" id="d">D</option>
+                    <option value="E" id="e">E</option>
+                    <option value="F" id="f">F</option>
+                    <option value="G" id="g">G</option>
+                    <option value="H" id="h">H</option>
+                    <option value="I" id="i">I</option>
+                    <option value="J" id="j">J</option>
+                    <option value="K" id="k">K</option>
+                    <option value="L" id="l">L</option>
+                    <option value="M" id="m">M</option>
+                    <option value="N" id="n">N</option>
+                    <option value="O" id="o">O</option>
+                    <option value="P" id="p">P</option>
+                    <option value="Q" id="q">Q</option>
+                    <option value="R" id="r">R</option>
+                    <option value="S" id="s">S</option>
+                    <option value="T" id="t">T</option>
+                    <option value="U" id="u">U</option>
+                    <option value="V" id="v">V</option>
+                    <option value="W" id="w">W</option>
+                    <option value="X" id="x">X</option>
+                    <option value="Y" id="y">Y</option>
+                    <option value="Z" id="z">Z</option>
+        `
+
+        setTimeout(back, 2000)
+    }
+    var guessbtn = document.querySelector('.guess')
+    function showbtn() {
+        guessbtn.style.display = 'block'
+    }
+    function hidebtn() {
+        guessbtn.style.display = 'none'
+    }
+
+    var hangman = document.querySelector('img')
+    var selected = document.querySelector('select')
+    var avail
+
+    function check() {
+        avail = document.querySelectorAll('.letter')
+        var len = avail.length
+        var cur = 0
+        while (cur < len) {
+            if (avail[cur].id == selected.value) {
+                avail[cur].textContent = selected.value;
+                // hangman.src = 'hap.png'
+            }
+            // else if (avail[cur].id != selected.value) {
+            //     hangman.src = 'revive.png'
+            // }
+
+            cur++
+
+        }
+    }
+
+    var curmood = 'happy'
+    var boxlist = document.querySelectorAll('.box')
+    var curbox = 0
+
+    function react() {
+        var found = 0
+        avail = document.querySelectorAll('.letter')
+        var len = avail.length
+        var cur = 0
+        if (selected.value.length > 0) {
+            document.getElementById(selected.value.toLowerCase()).disabled = true
+        }
+
+
+        while (cur < len && found == 0) {
+            if (selected.value.length > 0) {
+                if (avail[cur].id == selected.value) {
+                    hangman.src = 'hap.png'
+                    found = 1
+                    curmood = 'happy'
+                }
+
+                else if (avail[cur].id != selected.value) {
+                    hangman.src = 'revive.png'
+                    curmood = 'angry'
+                }
+                cur++
+
+            }
+        }
+    }
+
+    function x() {
+        if (word.includes(selected.value) == false) {
+            boxlist[curbox].textContent = 'X'
+            curbox++
+        }
+        selected.value = ''
+        if (curbox > 3) {
+            fail()
+        }
+
+    }
+
+    function susp() {
+        if (selected.value.length > 0) {
+            hangman.src = 'susp.png'
+        }
+    }
+
+    function back() {
+        if (curmood == 'happy') {
+            hangman.src = 'hap.png'
+        }
+        else if (curmood == 'angry') {
+            hangman.src = 'revive.png'
+        }
+
+
+    }
+    var stillgood = true
+    function checkwin() {
+        stillgood = true
+        var alllets = document.querySelectorAll('.letter')
+        for (let ind = 0; ind < alllets.length; ind++) {
+            if (stillgood == true) {
+                if (alllets[ind].textContent != '') {
+                    stillgood = true
+                }
+                else if (alllets[ind].textContent == '') {
+                    stillgood = false
+                }
+
+            }
+
+
+        }
+        if (stillgood == true) {
+            score++
+            refresh('hap.png')
+            scoretxt.textContent = 'Score: ' + score
+        }
+    }
+    checkwin()
+
+    // GAME OVER
+    var failed = document.querySelector('.failed')
+    function fail() {
+        table.style.display = 'none'
+        failed.style.display = 'flex'
+        hangman.style.marginTop = '600px'
+        hangman.style.opacity = '0'
+        hangman.style.animation = ' spin .7s linear infinite'
+
+
+        var allletrs = document.querySelectorAll('.letter')
+        for(let curlet = 0; curlet < allletrs.length; curlet++){
+            allletrs[curlet].style.background = '#ff3838'
+            allletrs[curlet].style.border = '2px solid #ff8383'
+            allletrs[curlet].style.color = '#ff8383'
+
+        }
+
+
+    }
+    function quit() {
+        window.close()
+
+    }
+
+
+</script>
+
+</html>

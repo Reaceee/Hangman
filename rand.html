@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="pad">
+        <h1>Just Say Reace</h1>
+        <div class="pas"><h1>Just Say Reace</h1></div>
+    </div>
+</body>
+<style>
+
+    .pad{
+        display: flex;
+        width: 250px;
+        
+    }
+    body{
+        background-color: #f1f1f1;
+        display: flex;
+        align-items: center;
+        min-height: 100vh;
+        justify-content: center;
+    }
+    h1{
+        font-family: montserrat;
+        color: #cfcfcf;
+        width: 500px;
+    }
+    .pas h1{
+        background-image: linear-gradient(90deg, #ff3d6a, #3db8ff, #3db8ff);
+        -webkit-background-clip: text;
+        -moz-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        z-index: 3;
+        font-family: montserrat;
+        font-weight: 900;
+    }
+
+     .pas{
+        position: absolute;
+        margin-top: 0;
+        /* top: 0; */
+        animation: close 3s linear infinite;
+        word-wrap: none;
+        flex-wrap: none;
+        word-wrap: none;
+        overflow: hidden;
+        transition: .7s;
+    }
+
+    
+
+    @keyframes close {
+        0%{width: 0;}
+        25%{width: 250px;}
+        50%{width: 250px;}
+        75%{width: 0;}
+        100%{width: 0;}
+
+    }
+</style>
+<script>
+    var msg= 'robotics'
+    console.log(msg.charAt(3));
+    // console.log(msg.);s
+    var h1 = document.querySelector('h1')
+
+    // ASSIGNMENT:
+    // check out 10 other methods except indexof, replaceall, replace, charat
+
+        /*
+________________________________________________________________________________________________________
+   METHOD           |    TYPE   |     FUNCTION                                                          |
+____________________|___________|_______________________________________________________________________|
+    .sort()         | Array     | Arranges the values in an array in alphabetic and numeric order.      |   
+    .lastIndexOf(x) | String    | Gets the index of the last x in a string.                             |
+    .repeat(x)      | String    | Repeats a string x number of times.                                   |  
+    .includes(x)    | Both      | Checks if a string or an array contains x.                            |
+    .startsWith(x)  | String    | Checks if a string begins with x.                                     |
+    .endsWith(x)    | String    | Checks if a string ends with x.                                       |    
+    .slice(x)       | Both      | Returns a value of a string or an array starting from the index, x    |
+    .split('-')     | String    | Breaks a string containing '-', using '-' as the "cut-point" and...   |
+                    |           | then stores all cuts in a single array as different values.           |
+    .join('+')      | Array     | Joins all data in an array using "+".                                 |  
+    .push(x)        | Array     | Adds x into an array as the new last value.                           |
+                    |           |                                                                       |
+____________________|___________|_______________________________________________________________________|
+    
+    
+    */
+
+
+
+
+
+</script>
+</html>
+
+
+
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="pad">
+        <h1>Just Say Reace</h1>
+        <div class="pas"><h1>Just Say Reace</h1></div>
+    </div>
+</body>
+<style>
+
+    .pad{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    body{
+        background-color: #f1f1f1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+    }
+    h1{
+        font-family: montserrat;
+        color: #cfcfcf;
+        width: 500px;
+        display: none;
+    }
+    .pas h1{
+        background-image: linear-gradient(90deg, #ff3d6a, #3db8ff, #3db8ff);
+        -webkit-background-clip: text;
+        -moz-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        z-index: 3;
+        font-family: montserrat;
+        font-weight: 900;
+        display: block;
+    }
+
+     .pas{
+        position: absolute;
+        margin-top: 0;
+        /* top: 0; */
+        animation: close 3s linear infinite;
+        word-wrap: none;
+        flex-wrap: none;
+        word-wrap: none;
+        overflow: hidden;
+        transition: .7s;
+    }
+
+    
+
+    @keyframes close {
+        0%{width: 0;}
+        25%{width: 250px;}
+        50%{width: 250px;}
+        75%{width: 0;}
+        100%{width: 0;}
+
+    }
+</style>
+<script>
+    var msg= 'I like cats, cats are okay'
+    console.log(msg.replaceAll('cats', 'dogs'));
+</script>
+</html> -->
